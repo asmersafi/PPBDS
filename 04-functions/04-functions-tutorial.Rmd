@@ -1506,3 +1506,145 @@ tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>%
 
 
 ```
+
+For our last exercise, let's revert back to our `midwest` data. For each of the counties in the data, we are aware of the percentage of people that are living below the poverty line (`midwest$percbelowpoverty`).
+
+We will use this to calculate the percentage of people above poverty line, for conties Wexford and Waupaca. 
+
+```{r make-map6}
+
+midwest_data <- ggplot2::midwest
+
+
+```
+
+```{r map6,eval=TRUE, echo = TRUE}
+
+midwest_data <- midwest_data %>% 
+  
+  # Selecting for relevant variables
+  
+  select(county, percbelowpoverty) %>% 
+  
+  # Filtering for the relevant counties.
+  
+  filter(county %in% c("WEXFORD", "WAUPACA")) %>% 
+  
+  # grouping by county.
+  
+  group_by(county)
+ 
+midwest_data
+
+```
+
+Now, use summarize to create a list column, `pov` for the `percbelowpoverty` variable. 
+
+```{r make-map7}
+
+midwest_data <- ggplot2::midwest
+
+
+midwest_data <- midwest_data %>% 
+  
+  # Selecting for relevant variables
+  
+  select(county, percbelowpoverty) %>% 
+  
+  # Filtering for the relevant counties.
+  
+  filter(county %in% c("WEXFORD", "WAUPACA")) %>% 
+  
+  # grouping by county.
+  
+  group_by(county)
+ 
+```
+
+```{r map7, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+midwest_data <- midwest_data %>% 
+   
+  # Use summarize to create a list column, `pov` for the `percbelowpoverty` variable.
+  
+  ---------------------
+
+midwest_data
+```
+
+```{r map7-solution}
+
+midwest_data <- midwest_data %>% 
+   
+  # Use summarize to create a list column, `pov` for the `percbelowpoverty` variable.
+  
+  summarize(pov = list(c(percbelowpoverty)))
+
+midwest_data
+
+```
+
+
+```{r map7-check}
+
+grade_code("Great, you have created a list column!")
+
+```
+
+Now use `map_dbl()` to calculate the percentage of people above poverty, using an anonymous function. Name this variable `abovepov`. Use `100 - x` to calculate the remaining percentage. 
+
+```{r make-map8}
+midwest_data <- ggplot2::midwest
+
+
+midwest_data <- midwest_data %>% 
+  
+  # Selecting for relevant variables
+  
+  select(county, percbelowpoverty) %>% 
+  
+  # Filtering for the relevant counties.
+  
+  filter(county %in% c("WEXFORD", "WAUPACA")) %>% 
+  
+  # Grouping by county.
+  
+  group_by(county) %>% 
+  
+  
+ summarize(pov = list(c(percbelowpoverty)))
+
+
+```
+
+
+```{r map8, exercise = TRUE, echo = TRUE, eval=TRUE}
+
+midwest_data %>% 
+  mutate(abovpov = ------------------------------)
+
+```
+
+```{r map8-hint-1}
+"Use `100 - x` to calculate the remaining percentage"
+```
+
+```{r map8-hint-2}
+"Use `map_dbl(pov, ~ 100 - .)` to calculate the remaining percentage"
+```
+
+
+```{r map8-solution}
+
+midwest_data %>% 
+  mutate(abovpov = map_dbl(pov, ~ 100 - .))
+
+```
+
+```{r map8-check}
+
+grade_code("Great, you've calculated the percentage of population above the poverty line in Wexford and Waupaca!")
+
+```
+
+Congratulations! This brings the tutorial to an end. You have mastered functions. 
