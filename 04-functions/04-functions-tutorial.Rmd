@@ -1215,6 +1215,9 @@ quiz(
 
 ```
 
+<!-- Not following the order of the book here - ... arguments were incorporated in the previous section of the tutorial. -->
+
+
 ## Anonymous Functions
 
 Let's test our knowledge of anonymous functions. 
@@ -1319,7 +1322,8 @@ quiz(
 ```
 
 
-## List-Columns and Map Functions
+##  List columns and `map_*` functions
+
 
 ```{r, quiz-13}
 
@@ -1329,25 +1333,46 @@ quiz(
                     correct = TRUE),
              answer("Lists and list columns are synonyms."),
              answer("List columns can only contain values as elements in the list."),
-             answer("R and RStudio are both IDEs"),
+             answer("All of the above."),
              allow_retry = TRUE
     ),
+  
+  
   question("Which of the following map functions is not using an anonymous function? ",
              answer("mutate(new = map_dbl(start, increment()))",
                     correct = TRUE),
              answer("mutate(new = map_dbl(start, function(x) x + 1))"),
              answer("mutate(new = map_dbl(start, ~ . + 1))"),
              answer("mutate(new = map_dbl(start, ~ (. + 1)))"),
-             allow_retry = TRUE
-    )
+             allow_retry = TRUE), 
+  
+   question("What is true about an atomic vector? Check all that apply.",
+             answer("Each element of the atomic vector has more than one value."),
+             answer("Each element of the atomic vector can take the form of a list."),
+             answer("Each element of the atomic vector has one value.", correct = TRUE),
+             answer("if an atomic vector is a column in your dataset, each observation gets a single value", correct = TRUE),
+             allow_retry = TRUE, 
+           type = "multiple"), 
+  
+    question("What will the following function do: `tibble(new_col = list(1:19, 23:25, 3:5))`. Check all that apply.",
+             answer("Create a column variable with values starting from 1, and ending at 25."),
+             answer("Create a tibble with one variable and two observations"),
+             answer("Create a tibble with one variable and one observation.", correct = TRUE),
+             answer("Produce a list with three elements", correct = TRUE),
+             allow_retry = TRUE, 
+            type = "multiple"),
+  
+     question("Which of the following is true about list columns? Check all that apply.",
+             answer("We use `str_split()` to remove list columns."),
+             answer("We use `mutate()` to create list columns.", correct = TRUE),
+             answer("Each element of a list can only have one kind of data type."),
+             answer("Each element of a list can only have multiple data types.", correct = TRUE),
+             allow_retry = TRUE, 
+             type = "multiple")
   
 )
 
 ```
-`
-<!-- Not following the order of the book here - ... arguments were incorporated in the previous section of the tutorial. -->
-
-
 
 
 
