@@ -611,7 +611,9 @@ celsius_to_kelvin <- function(celsius) {
 grade_code()
 ```
 
-You've created yet another successful function. *Note that in R, it is not necessary to include the return statement. R automatically returns whichever variable is on the last line of the body of the function. While in the learning phase, we will explicitly define the return statement.*
+You've created yet another successful function. *Note that in R, it is not necessary to include the `return()` statement. R automatically returns whichever variable is on the last line of the body of the function. While in the learning phase, we will explicitly define the return statement. You absolutely must use return() if you want to return early based on some condition, i.e. before execution gets to the last line of the body. Otherwise, you can decide your own conventions about when you use return() and when you don’t.*
+
+### Error messages with `stopifnot()`
 
 Moving forward, we want to make sure that the input used by this function to convert from Celsius to Kelvin is a numeric vector. Temperatures are to only be recorded in numeric terms, for the purposes of this conversion.
 
@@ -654,7 +656,7 @@ Great! You have successfuly used `stopifnot()` as part of this function. Let's c
 
 In the next chunk, create the object `test`. This must contain the vector `c(TRUE)`.
 
-Next, input the object `test` into the `celsius_to_kelvin()` function. See if it works by submitting the answer. 
+Next, input the object `test` into the `celsius_to_kelvin()` function. See if it works by running the code. 
 
 ```{r verifyfunction2, exercise = TRUE}
 
@@ -694,14 +696,632 @@ celsius_to_kelvin(test)
 
 ```
 
-
 ```{r verifyfunction2-check}
 grade_code()
 ```
 
+We see that R presents us with the error `Error in celsius_to_kelvin(n) : is.numeric(celsius) is not TRUE`. Note that had we not deployed the stopifnot() function, R would have tried to make sense of our input - coercing the logical vector `TRUE` into the numerical vector `1`. It would then proceed to calculate the temperature in Kelvins by using `1 + 273.15`, yielding the answer `274.15`. 
+
+
+Yet, we see that the error message that we receive isn't the most effective. Let's now use the `if()` and `stop()` functions in conjunction with one another, to create successful, and effective error messages. 
+
+### Error messages with `if()` and `stop()`. 
+
+Let's say we only want to convert temperatures from Celsius to Kelvins for temperatures above 18 Degrees Celsius. How do we do this?
+
+Let's first establish a check for the class of vectors. As in the previous exercise, we want to only use numeric vector inputs for our `celsius` arguments. 
+
+
+```{r verifyfunction3, exercise = TRUE}
+
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin1 <- function(celsius) {
+  
+  # Put the validity check inside the `if()` statement. 
+  
+  if(-------) {
+    
+  # Add the error message "Sorry, this function only works for numeric inputs!"
+  # in the body of the `stop()` function.  
+    
+    stop(--------)
+  }
+  
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+```
+
+```{r verifyfunction3-hint-1}
+"Wrap `!is.numeric(celsius)` in the `if()` function"
+```
+
+```{r verifyfunction3-hint-2}
+"Add 'Sorry, this function only works for numeric inputs!' in the body of the `stop()` function"
+```
+
+```{r verifyfunction3-solution}
+
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin1 <- function(celsius) {
+  
+  # Put the validity check inside the `if()` statement. 
+  
+  if(!is.numeric(celsius)) {
+    
+  # Add the error message "Sorry, this function only works for numeric inputs!"
+  # in the body of the `stop()` function.  
+    
+    stop('Sorry, this function only works for numeric inputs!')
+  }
+  
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+```
+
+
+```{r verifyfunction3-check}
+grade_code()
+```
+
+Check the function with the text input "Hi". Run code to see error message. 
+
+```{r verifyfunction4, exercise = TRUE}
+
+celsius_to_kelvin1("Hi")
+
+```
+
+```{r verifyfunction4-check}
+grade_code()
+```
+
+Incredible! Let's now put an additional condition on our code to verify that no input below 18 degrees Celsius is converted by our function to Kelvins. 
+
+
+```{r verifyfunction5, exercise = TRUE}
+
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin2 <- function(celsius) {
+  if(!is.numeric(celsius)) {
+    stop('Sorry, this function only works for numeric inputs!')
+  }
+  
+  # Add a condition in the next `if()` function to make sure that the temperatures that can 
+  # be input into the function are always 18 degrees or greater. 
+  
+  if(-----) {
+    
+    # Use the custom error message 'Sorry, this function only works 
+    # for inputs greater than 18 Degrees Celsius' in the body of the `stop()` function.
+    
+    stop(-------------)
+  }
+  
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction3-hint}
+"Use `celsius < 18` in the `if()` function."
+```
+
+
+```{r verifyfunction5-solution}
+
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin2 <- function(celsius) {
+  if(!is.numeric(celsius)) {
+    stop('Sorry, this function only works for numeric inputs!')
+  }
+  
+  # Add a condition in the next `if()` function to make sure that the temperatures that can 
+  # be input into the function are always 18 degrees or greater. 
+  
+  if(celsius < 18) {
+    
+    # Use the custom error message 'Sorry, this function only works 
+    # for inputs greater than 18 Degrees Celsius' in the body of the `stop()` function.
+    
+    stop('Sorry, this function only works for inputs greater than 18 Degrees Celsius')
+  }
+  
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction5-check}
+grade_code()
+```
+
+Great! Now verify the function for an argument input of less than 18. 
+
+```{r verifyfunction6, exercise = TRUE}
+
+celsius_to_kelvin2 <- function(celsius) {
+  if(!is.numeric(celsius)) {
+    stop('Sorry, this function only works for numeric inputs!')
+  }
+  if(celsius < 18) {
+    stop('Sorry, this function only works for inputs greater than 18 Degrees Celsius')
+  }
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+
+celsius_to_kelvin2(--)
+
+```
+
+```{r verifyfunction6-check}
+grade_code()
+```
+
+Great work! You're all set to verify the arguments of your functions. 
+
+What we’ve accomplished:
+
+- We’ve written several functions.
+- We can check the validity of their input arguments.
+
+## More on Arguments
+
+
+### Default Values and `...` :
+
+In this part, we generalize our functions, learn more technical details about R functions, and set default values for some arguments.
+
+Let's start off with a short quiz: 
+
+```{r, quiz-8}
+
+quiz(
+  question("True or False? A function can only have one argument.",
+             answer("False", correct = TRUE),
+             answer("True"),
+             answer("False, but the second argument needs to be set to a default value."),
+             answer("Depends on the function."),
+             allow_retry = TRUE,
+             message = "A function can have more than one argument. We have the freedom to assign reasonable default values to each of the arguments, depending on what the function is to be used for.")
+  
+)
+
+```
+
+Let's now see where setting default arguments can become important. In the following questions, we use a simple function called `foo()`. 
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+```{r default-args, echo = FALSE}
+question("Now what will `foo()` return?",
+         answer('[1] "aaa" "abb" "abc"'),
+         answer('[1] 1 2 3', correct = TRUE, message = "An argument with a default value is optional, R will use the default value if you do not provide one."),
+         answer("An error"),
+         allow_retry = TRUE)
+```
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+```{r position-1, echo = FALSE}
+question("What will `foo(0)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 0 2 3", correct = TRUE, message = "If you do not provide an argument name in your call, R will match your value to the first unmatched argument name."),
+         answer("[1] 1 0 3"),
+         answer("[1] 1 2 0"),
+         answer("[1] 0 0 0"),
+         answer("An error"),
+         allow_retry = TRUE)
+```
+
+###  
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+
+```{r position-2, echo = FALSE}
+question("What will `foo(0, 5)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 0 5 3", correct = TRUE, message = "I think you have the hang of position matching."),
+         answer("[1] 0 5 0"),
+         answer("[1] 0 5 5"),
+         answer("An error"),
+         allow_retry = TRUE)
+```
+
+### Names
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+```{r complete-names, echo = FALSE}
+question("What will `foo(aaa = 0, abc = 5)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 0 5 3"),
+         answer("[1] 0 5 0"),
+         answer("[1] 0 2 5", correct = TRUE, message = "Using complete argument names is the easiest way to avoid an error (and to write comprehensible code). But what if you use a partial argument name?"),
+         answer("An error"),
+         allow_retry = TRUE)
+```
+
+### Partial names
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+```{r partial-names, echo = FALSE}
+question("What will `foo(aa = 0)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 0 2 3", correct = TRUE, message = "You do not need to spell out the full argument name, so long as you provide enough of the name to uniquely identify the argument. Here `aa` could only be the beginning of the `aaa` argument."),
+         answer("[1] 0 0 0"),
+         answer("An error"),
+         allow_retry = TRUE)
+```
+
+###  
+
+```{r, echo = TRUE}
+foo <- function(aaa = 1, abb = 2, abc = 3) {
+  c(aaa, abb, abc)
+}
+```
+
+```{r partial-names-2, echo = FALSE}
+question("What will `foo(a = 0)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 0 2 3"),
+         answer("[1] 0 0 0"),
+         answer("An error", correct = TRUE, message = "Here `a` does not uniquely match an argument name: it is the beginning of all three argument names. R isn't psychic, so it won't guess which argument you meant. Instead R returns an error. It's the right thing to do because it lets you fix your code."),
+         allow_retry = TRUE)
+```
+
+### Dots
+
+Now for some dark magic:
+
+```{r, echo = TRUE}
+foodoo <- function(...) {
+  c(...)
+}
+```
+
+```{r dots-1, echo = FALSE}
+question("What will `foodoo(1, 2, 3)` return?",
+         answer("[1] 1 2 3", correct = TRUE, message = "`...` is a special mechanism for passing arguments. `...` will match any argument not otherwise matched and pass those arguments on as a group. This is a convenient way to pass a set of arguments through to a function in the function body."),
+         answer("An error."),
+         answer("Oh my goodness! You've broken R!"),
+         allow_retry = TRUE)
+```
+
+###  
+
+```{r}
+foodoo <- function(...) {
+  c(...)
+}
+```
+
+```{r dots-2, echo = FALSE}
+question("What will `foodoo(a = 1, b = 2, c = 3)` return?",
+         answer("[1] 1 2 3"),
+         answer("[1] 1 2 3 _but with the names a b c above the values_", correct = TRUE, message = "If you provide names to your values, `...` will capture those as well and pass them on. So here, our code essentially runs `c(a = 1, b = 2, c = 3)`."),
+         answer("An error."),
+         allow_retry = TRUE)
+```
+
+###  
+
+Here is one last wrinkle. Suppose we rewrite `foodoo` slightly:
+
+```{r}
+foodoo <- function(a, ...) {
+  c(...)
+}
+```
+
+```{r dots-3, echo = FALSE}
+question("What will `foodoo(a = 1, b = 2, c = 3)` return?",
+         answer("[1] 1 2 3 with the names a b c above the values"),
+          answer("[1] 2 3 with the names b c above the values", correct = TRUE, message = "Remember that `...` only captures _unmatched_ values. Now that `a` is a formal argument, `a = 1` will be matched to it, leaving `b = 2` and `c = 3` to be captured and passed on."),
+         answer("An error."),
+         allow_retry = TRUE)
+```
+
+Congratulations! You've finished the quiz and know a lot about how R parses arguments.
+
+
+Let's make a new function of our own: This one finds the first argument raised to the power of second argument and prints the result in appropriate format. We'll call it power. 
+
+
+```{r default, exercise = TRUE}
+power <- function(x, y) {
+  
+# function to print x raised to the power y
+  
+result <- --- 
+  
+print(paste(x,"raised to the power", y, "is", result))
+}
+
+```
+
+```{r default-hint}
+"Use `x^y to calculate x raised to the power of y`."
+```
+
+
+```{r default-solution}
+power <- function(x, y) {
+  
+# function to print x raised to the power y
+  
+result <- x^y 
+  
+print(paste(x,"raised to the power", y, "is", result))
+}
+
+```
+
+```{r default-check}
+grade_code()
+```
+
+Great. Notice that the function has two arguments - x and y. Test the function to calculate 2 raised to the power 5. 
+
+```{r default2, exercise = TRUE}
+power <- function(x, y) {
+  result <- x^y 
+  print(paste(x,"raised to the power", y, "is", result))
+}
+
+power(--,--)
+```
+
+```{r default2-solution}
+power <- function(x, y) {
+  result <- x^y 
+  print(paste(x,"raised to the power", y, "is", result))
+}
+
+power(2,5)
+```
+
+
+```{r default2-check}
+grade_code()
+```
+
+
+Let's say we only want to use the function to calculate the squared value of the input argument x. How do we go about changing the function to do that?
+
+```{r default3, exercise = TRUE}
+power <- function(x, y = --- ) {
+  result <- x^y 
+  print(paste(x,"raised to the power", y, "is", result))
+}
+
+# Now, call the function without specifying the y argument. 
+# Calculate the Squared value of 515. 
+
+power()
+```
+
+```{r default3-solution}
+power <- function(x, y = 2) {
+  result <- x^y 
+  print(paste(x,"raised to the power", y, "is", result))
+}
+
+# Now, call the function without specifying the y argument. 
+# Calculate the Squared value of 515. 
+
+power(515)
+```
+
+```{r default3-check}
+grade_code()
+```
+
+Now that we have set the y argument to a default value, we do not need to specify the value of the y argument every time we run the function. 
+
+
+## Being proactive about NAs
+
+While most of the built in R datasets (`midwest`, `gapminder` etc.) do not contain missing values, on most occasions you will find that your datasets have missing data values. Let's explore this further. 
+
+```{r, quiz-9}
+
+quiz(
+  question("What does the `na.rm` argument do, if set to FALSE?",
+             answer("It removes all input NA values and allows the function to compute the input object." ),
+             answer("It adds NA values to the object, to stop the function from running."),
+             answer("It does not remove NA values, stopping the function from successfully running", correct = TRUE),
+             answer("All of the above"),
+             allow_retry = TRUE,
+             message = "Many built-in R functions have an na.rm = argument through which you can specify how you want to handle NAs. Typically the default value is na.rm = FALSE and typical default behavior is to either let NAs propagate or to raise an error."
+    )
+)
+
+```
+
+Let's now look at a new function. Instead of subtracting the maximum and minimum values of a numeric variable, it adds them. We call this function `add_max_min()`. 
+
+```{r}
+add_max_min <- function(x, probs = c(0, 1), na.rm = FALSE) {
+  stopifnot(is.numeric(x))
+  the_quantiles <- quantile(x, probs, na.rm = na.rm)
+  max(the_quantiles) + min(the_quantiles)
+}
+
+add_max_min(midwest$popadults)
+```
+
+```{r, quiz-10}
+
+quiz(
+  question("Assuming we convert the 10th value of the object `midwest$popadults` to NA, using the following code: `midwest$popadults[10] <- NA`. What stops this function from adding the value of the two quantiles?",
+           
+             answer("Nothing. It will work." ),
+             answer("The probability arguments are incorrect."),
+             answer("`na.rm` is set to `FALSE`.", correct = TRUE),
+             answer("All of the above"),
+             allow_retry = TRUE,
+             message = "Correct! Our function, `add_max_min()` simply will not operate in the presence of NAs unless na.rm = TRUE"
+    ),
+  
+  question("Where should we set `na.rm = TRUE`?",
+           
+             answer("Replace `x` in `function()` with `na.rm = TRUE`." ),
+             answer("As an argument of the `quantile()` function."),
+             answer("Add a new line after ` max(the_quantiles) + min(the_quantiles)`. Write `na.rm = TRUE` here."),
+             answer("As an argument of `add_max_min`.", correct = TRUE),
+             allow_retry = TRUE,
+             message = "Correct! We could hardwire `na.rm = TRUE` within the `quantile()` function too. However, it is dangerous to invert the default behavior of a well-known built-in function and to provide the user with no way to override this."
+    )
+  
+)
+
+```
+
+## Anonymous Functions
+
+Let's test our knowledge of anonymous functions. 
+
+```{r, quiz-11}
+
+quiz(
+  question("What are anonymous functions?",
+             answer("A built-in function in R."),
+             answer("Functions without arguments."),
+             answer("Functions with more than three arguments."),
+             answer("Functions without names.", correct = TRUE),
+             allow_retry = TRUE, 
+             message = "Correct! An anonymous function in R is one without a name. We can create a function “on the fly”, especially for use within `map*()` functions, without bothering to give it a name."
+    ),
+  
+  question("Which of the following map functions is not using an anonymous function? ",
+             answer("mutate(new = map_dbl(start, increment()))",
+                    correct = TRUE),
+             answer("mutate(new = map_dbl(start, function(x) x + 1))"),
+             answer("mutate(new = map_dbl(start, ~ . + 1))"),
+             answer("mutate(new = map_dbl(start, ~ (. + 1)))"),
+             allow_retry = TRUE
+    ),
+  
+   question("Which of the following can be classified as an anonymous function? ",
+             answer("`(function(x) x * 10)(10)`",
+                    correct = TRUE),
+             answer("`fun <- function(x) x * 10`"),
+             answer("`function(x * 10)`"),
+             answer("`x * 10`"),
+             allow_retry = TRUE
+    )
+  
+  
+)
+
+```
+
+Let's look at the following dataframe to see anonymous functions in action: 
+
+###
+
+```{r, echo = TRUE}
+
+# Create a dataset
+df <- data.frame(
+  col1 = c("element1", "element2"),
+  col2 = c("element1", "element2"), 
+  stringsAsFactors = FALSE
+)
+```
+
+Use `lapply()` to apply the function `function(x) paste(x, "doing stuff")` on the dataframe `df` we've created. Two arguments are relevant when using `lapply()`. The first is `x`, which is a vector (atomic or list) or an expression object. In our case, it will be our dataframe `df`. The second argument is `FUN`, the function to be applied to each element of `x`. 
+
+```{r anon, exercise = TRUE}
+
+# lapply an anonymous function to the columns of the dataset
+
+lapply(--, -------------)
+
+```
+
+```{r anon-hint}
+
+"The first argument of the `lapply()` function will be the dataframe, `df`."
+```
+
+```{r anon-solution}
+
+# lapply an anonymous function to the columns of the dataset
+
+lapply(df, function(x) paste(x, "doing stuff"))
+
+```
+
+
+```{r anon-check}
+
+grade_code()
+
+```
+
+Excellent!
+
+Note that instead of defining the function with a name, we resorted to using the complete code for the function to be applied to the data frame. Anonymous functions are commonly used with `lapply()` or `map*()` functions in this way. 
+
+```{r, quiz-12}
+
+quiz(
+  question("Which of the following are using anonymous functions?",
+             answer("`lapply(mtcars, function(x) length(unique(x)))`"),
+             answer("`filter(function(x) !is.numeric(x), mtcars)`"),
+             answer("`integrate(function(x) sin(x) ^ 2, 0, pi)`"),
+             answer("All of the above", correct = TRUE),
+             allow_retry = TRUE, 
+             message = "Correct! All of the functions used above are anonymous functions!"
+    )
+  
+)
+
+```
+
+
 ## List-Columns and Map Functions
 
-```{r, quiz-7}
+```{r, quiz-13}
 
 quiz(
   question("Which of the following is true about list-columns?",
@@ -720,9 +1340,12 @@ quiz(
              answer("mutate(new = map_dbl(start, ~ (. + 1)))"),
              allow_retry = TRUE
     )
+  
 )
 
 ```
+`
+<!-- Not following the order of the book here - ... arguments were incorporated in the previous section of the tutorial. -->
 
 
 
