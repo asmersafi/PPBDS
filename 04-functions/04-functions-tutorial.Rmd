@@ -9,6 +9,7 @@ runtime: shiny_prerendered
 library(tidyverse)
 library(gradethis)
 library(learnr)
+library(purrr)
 knitr::opts_chunk$set(echo = FALSE, exercise.checker = grade_learnr)
 ```
 
@@ -471,7 +472,7 @@ l2 <- function(x) {
 
 ### Quiz:
 
-*Let's go back to our `range_function` for a bit, and test it with varying inputs. Remember, we built the range_function to help us calculate the range of a numeric variable, popadults.* 
+Let's go back to our `range_function` for a bit, and test it with varying inputs. Remember, we built the range_function to help us calculate the range of a numeric variable, popadults.
 
 ```{r, quiz-3}
 
@@ -497,7 +498,7 @@ quiz(
 
 ### Building a new function, and putting it to test: 
 
-*Now help us write a function that computes the sum of an input object, and multiplies it by 4. Call this function `sumtimesfour`.*
+Now help us write a function that computes the sum of an input object, and multiplies it by 4. Call this function `sumtimesfour`.
 
 ```{r testfunction, exercise = TRUE}
 
@@ -526,7 +527,7 @@ sumtimesfour <- function(x) {
 grade_code()
 ```
 
-*Now, copy the following object onto your R chunk `n <- c(TRUE, FALSE, TRUE, FALSE)`. Then input `n` into the sumtimesfour function.* 
+Now, copy the following object onto your R chunk `n <- c(TRUE, FALSE, TRUE, FALSE)`. Then input `n` into the sumtimesfour function. 
 
 ```{r testfunction1, exercise = TRUE}
 
@@ -558,7 +559,7 @@ sumtimesfour(n)
 grade_code()
 ```
 
-*Recall that R tries to compute our input arguments, even though the outputs produced make absolutely no sense at all. This points us to another, incredibly important task - verifying our arguments, to ensure that they only compute values for the appropriate argument inputs.*  
+Recall that R tries to compute our input arguments, even though the outputs produced make absolutely no sense at all. This points us to another, incredibly important task - verifying our arguments, to ensure that they only compute values for the appropriate argument inputs. 
 
 ## Check the validity of arguments
 
@@ -585,7 +586,7 @@ quiz(
 
 ```
 
-*Let's now move on to create a new function, and verify its argument. Recall the Rule of Repair: 'When you must fail, fail noisily and as soon as possible'. We will try our best to act on this rule!*
+Let's now move on to create a new function, and verify its argument. Recall the Rule of Repair: 'When you must fail, fail noisily and as soon as possible'. We will try our best to act on this rule!
 
 Let's compose a function that converts temperatures from the Celsius, to the Kelvin scale. The formula to do so is as follows: `celsius + 273.15`. Use this to develop your fourth R function of the day. We call this function `celsius_to_function`. 
 
@@ -1378,11 +1379,130 @@ quiz(
 
 ```
 
-Let's practice on an actual data set. We will load the `midwest` data once more, and apply our knowledge of list columns and `map*()` functions to it. 
+### Let's practice!
 
-First, let's practice using 
+Let's create a simple tibble. At a race at the Olympics, a racer ran 4 laps. The time it took the racer to run each lap , in minutes, is to be fed into the tibble column, `mins`. 
+
+The times are as follow: `c(10.3, 14.56, 17.9, 8.34)`. 
+
+Create a tibble using the `tibble()` function, with the column variable `mins`.
 
 
+```{r, map1, exercise = TRUE}
+
+tibble(--------------)
+
+```
 
 
+```{r map1-solution, echo = TRUE, eval = TRUE}
 
+tibble(mins = c(10.3, 14.56, 17.9, 8.34))
+
+```
+
+```{r map1-check}
+
+grade_code(correct = "Great work!")
+
+```
+
+Let's now use this data to practice using the `map*()` function. Because we're dealing with numeric values here, we're going to use the `map_dbl()` function. Let's say we want to convert the time for each lap into seconds. How do we go about doing that? 
+
+
+Let's name our new column `seconds`. We will use `mutate()` in conjunction with  `map_dbl()` to create a new column. 
+
+Remember, the `map_dbl()` function applies the same function to every row in a tibble. Let's first use an anonymous function to do our job for us. 
+
+```{r, map2, exercise = TRUE}
+
+tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>% 
+  mutate(seconds = map_dbl(----, ------------))
+
+```
+
+```{r map2-hint}
+"Use `function(x) x * 60`."
+
+```
+
+
+```{r, map2-solution, echo = TRUE, eval = TRUE}
+
+tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>% 
+  mutate(seconds = map_dbl(mins, function(x) x * 60))
+
+```
+
+```{r map2-check}
+
+grade_code(correct = "You have successfully created a new column for the same time, in seconds. Note that this could have also been achieved using a named function. Let's see how we can do that.")
+```
+
+Create a simple function called `convert` to change time in minutes to seconds. 
+
+```{r, map3, exercise = TRUE}
+
+convert <- -------------
+
+```
+
+
+```{r, map3-solution}
+
+# Use code from the previous exercise question
+convert <- function(x) x * 60
+
+```
+
+```{r map3-check}
+
+grade_code(correct = "Amazing!")
+```
+
+Now use this function in tandem with the `map_dbl()` function to convert times from seconds, to minutes. 
+
+```{r make-map4, echo = FALSE}
+convert <- function(x) x * 60
+
+```
+
+```{r map4, exercise = TRUE}
+
+# Use the `convert()` function
+
+tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>% 
+  mutate(seconds = map_dbl(mins, ------))
+
+```
+
+```{r map4-hint}
+"Use `convert` without the parantheses that normally follow a function. This is a standard rule for all `map*()` functions."
+
+```
+
+```{r, map4-solution}
+# Use the `convert()` function
+
+tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>% 
+  mutate(seconds = map_dbl(mins, convert))
+```
+
+```{r map4-check}
+
+grade_code(correct = "Amazing!")
+```
+
+You have successfully used the `map_dbl()` function for converting minutes to seconds for the racer's four laps. An alternative way to write an anonymous function for the same purpose would be by using the `purrr` package (from where we get `map_dbl()`). This second way uses the ~ operator and then uses . to represent the current element.
+
+For example, instead of using `map_dbl(mins, function(x) x * 60))`, we could have used `map_dbl(mins, ~ (. * 60)). 
+
+Try this in the section below. You should obtain the same results. 
+
+```{r map5, eval=TRUE, echo=TRUE, exercise = TRUE}
+
+tibble(mins = c(10.3, 14.56, 17.9, 8.34)) %>% 
+  mutate(seconds = map_dbl(mins, ~ (. * 60)))
+
+
+```
