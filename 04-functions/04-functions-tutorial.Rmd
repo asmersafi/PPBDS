@@ -130,14 +130,16 @@ Remember our steps:
 
 * Create an object named `x` that contains the vector `c(100, 100, 100, 100, 100, 100, 100, 100, 100, 90)` (hint: use copy and paste!). Then click Submit Answer. `x` will be the grades of your test student. 
 
-```{r obj, exercise = TRUE}
+```{r obj1, exercise = TRUE}
+x <- ------------------------------------
+
 ```
 
-```{r obj-solution}
+```{r obj1-solution}
 x <- c(100, 100, 100, 100, 100, 100, 100, 100, 100, 90)
 ```
 
-```{r obj-check}
+```{r obj1-check}
 "Now you can use x to develop and test your code"
 ```
 
@@ -175,7 +177,7 @@ x
 
 The `function()` function builds a function from a piece of R code. To use it, call `function()` followed by an opening brace, `{`. Then write one or more lines of R code followed by a closed brace, `}`, e.g.
 
-```{r}
+```{r, echo = TRUE}
 foo <- function() {
  a <- 1
  b <- 2
@@ -191,7 +193,7 @@ As you write your functions, recall that R will only return the result of the la
 
 Once you save a function, you can run it and inspect its contents.
 
-```{r}
+```{r, echo = TRUE}
 foo()
 foo
 ```
@@ -266,7 +268,7 @@ foo <- function(a, b) {
 
 Now I can define a new value for `a` and `b` each time I call `foo`. 
 
-```{r}
+```{r, echo = TRUE, eval = TRUE}
 foo(a = 1, b = 1)
 foo(a = 100, b = 200)
 ```
@@ -275,7 +277,7 @@ foo(a = 100, b = 200)
 
 To give an argument a default value, set it equal to a value when you define the function. For example, the code below will set the default value of `b` in `foo` to one.
 
-```{r}
+```{r, echo = TRUE, eval = TRUE}
 foo <- function(a, b = 1) {
  a + b
 }
@@ -318,14 +320,16 @@ grade <- function(x) {
 ```
 
 ```{r function, exercise = TRUE, exercise.setup = "make-grade"}
+grade(x = ------------------------------------------)
 ```
 
 ```{r function-solution}
 grade(x = c(100, 90, 90, 90, 90, 90, 90, 90, 90, 80))
 ```
 
+
 ```{r function-check}
-"Let's recap the function writing workflow."
+grade_code(correct = "Let's recap the function writing workflow.")
 
 ```
 
@@ -338,7 +342,7 @@ Congratulations on finishing the tutorial. Before you go, complete the following
 ```{r e1, echo = FALSE}
 
 question("What is the first step of writing a function?",
-         answer("Choose a name, then type <- function(){", message = "You shouldn't type function() until you have code that works with a real test case."),
+         answer("Choose a name, then type `<- function(){`", message = "You shouldn't type `function()` until you have code that works with a real test case."),
          answer("Create a real R object (or set of objects)", correct = TRUE, message = "You can then use the object to test your code."),
          answer("Assign argument names to your function"),
          answer("Write a help page that describes how your function will work."),
@@ -349,7 +353,7 @@ question("What is the first step of writing a function?",
 
 What will the following code return?
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = TRUE}
 f <- function(a, b, c) {
   a
   b
@@ -1373,6 +1377,12 @@ quiz(
 )
 
 ```
+
+Let's practice on an actual data set. We will load the `midwest` data once more, and apply our knowledge of list columns and `map*()` functions to it. 
+
+First, let's practice using 
+
+
 
 
 
