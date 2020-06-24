@@ -19,8 +19,6 @@ knitr::opts_chunk$set(echo = FALSE, exercise.checker = grade_learnr)
 
 ```{r quiz-1}
 
-# Weave this into the chapter, paragraph for paragraph
-
 
 
 quiz(
@@ -467,6 +465,8 @@ l2 <- function(x) {
 
 ## Test your function
 
+### Quiz:
+
 *Let's go back to our `range_function` for a bit, and test it with varying inputs. Remember, we built the range_function to help us calculate the range of a numeric variable, popadults.* 
 
 ```{r, quiz-3}
@@ -488,25 +488,220 @@ quiz(
              allow_retry = TRUE)
   
   
-  
-  
-  
 )
 ```
 
+### Building a new function, and putting it to test: 
+
+*Now help us write a function that computes the sum of an input object, and multiplies it by 4. Call this function `sumtimesfour`.*
+
+```{r testfunction, exercise = TRUE}
 
 
+sumtimesfour <- function(x) {
+  
+  -------
+  
+}
+```
+
+```{r testfunction-hint}
+"Use `sum(x) * 4`"
+```
+
+```{r testfunction-solution}
+sumtimesfour <- function(x) {
+  
+  sum(x) * 4
+  
+}
+
+```
+
+```{r testfunction-check}
+grade_code()
+```
+
+*Now, copy the following object onto your R chunk `n <- c(TRUE, FALSE, TRUE, FALSE)`. Then input `n` into the sumtimesfour function.* 
+
+```{r testfunction1, exercise = TRUE}
+
+
+sumtimesfour <- function(x) {
+   sum(x) * 4
+}
+
+n <- ----------
+  
+sumtimesfour(--)  
+```
+
+```{r testfunction1-solution}
+
+
+sumtimesfour <- function(x) {
+  sum(x) * 4
+}
+
+n <- c(TRUE, FALSE, TRUE, FALSE)
+
+sumtimesfour(n)  
+
+```
+
+
+```{r testfunction1-check}
+grade_code()
+```
+
+*Recall that R tries to compute our input arguments, even though the outputs produced make absolutely no sense at all. This points us to another, incredibly important task - verifying our arguments, to ensure that they only compute values for the appropriate argument inputs.*  
 
 ## Check the validity of arguments
 
-```{r, quiz-4}
+```{r, quiz-6}
+
+quiz(
+  question("What is a function's argument?",
+             answer("The line of logical reasoning used by a function to compute an output."),
+             answer("Values used by a function to compute a result.", correct = TRUE),
+             answer("Both."),
+             answer("Neither."),
+             allow_retry = TRUE
+    ),
+  
+  question("Why is it a good idea to verify a function's argument? Check all that apply.",
+             answer("To stop R from presenting us with non-sensical outputs.", correct = TRUE),
+             answer("To display error messages every time an inappropriate value is used as a function's argument.", correct = TRUE),
+             answer("To make sure R coerces the argument inputs to make sense of our requests."),
+             answer("All of the above."),
+             type = "multiple", 
+             allow_retry = TRUE)
+  
+)
+
+```
+
+*Let's now move on to create a new function, and verify its argument. Recall the Rule of Repair: 'When you must fail, fail noisily and as soon as possible'. We will try our best to act on this rule!*
+
+Let's compose a function that converts temperatures from the Celsius, to the Kelvin scale. The formula to do so is as follows: `celsius + 273.15`. Use this to develop your fourth R function of the day. We call this function `celsius_to_function`. 
+
+```{r verifyfunction, exercise = TRUE}
+
+# Copy the fomula code to compute the value of the temperature in Kelvins. 
 
 
+celsius_to_kelvin <- function(celsius) {
+  kelvin <- ------
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction-solution}
+
+
+celsius_to_kelvin <- function(celsius) {
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction-check}
+grade_code()
+```
+
+You've created yet another successful function. *Note that in R, it is not necessary to include the return statement. R automatically returns whichever variable is on the last line of the body of the function. While in the learning phase, we will explicitly define the return statement.*
+
+Moving forward, we want to make sure that the input used by this function to convert from Celsius to Kelvin is a numeric vector. Temperatures are to only be recorded in numeric terms, for the purposes of this conversion.
+
+One way to do this is to use the `stopifnot()` function. 
+
+```{r verifyfunction1, exercise = TRUE}
+
+# Use `stopifnot()` to verify that the input argument is a numeric vector. 
+# Once more, use `celsius + 273.15` to compute the value of the temperature in Kelvins. 
+
+celsius_to_kelvin <- function(celsius) {
+  -------------
+  kelvin <- ------
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction1-hint}
+"Use `is.numeric(celsius)` wrapped in `stopifnot()`. Remember, we want to ensure that the `celsius` input is a numeric one."
+```
+
+
+```{r verifyfunction1-solution}
+
+
+celsius_to_kelvin <- function(celsius) {
+  stopifnot(is.numeric(celsius))
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+```
+
+```{r verifyfunction1-check}
+grade_code()
+```
+
+Great! You have successfuly used `stopifnot()` as part of this function. Let's check if the function works with a non-numeric vector input. 
+
+In the next chunk, create the object `test`. This must contain the vector `c(TRUE)`.
+
+Next, input the object `test` into the `celsius_to_kelvin()` function. See if it works by submitting the answer. 
+
+```{r verifyfunction2, exercise = TRUE}
+
+# Create vector `test` here.
+-----------
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin <- function(celsius) {
+  stopifnot(is.numeric(celsius))
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+# Input `test` into the celsius_to_kelvin() function. 
+
+celsius_to_kelvin(----)
+
+```
+
+```{r verifyfunction2-solution}
+
+# Create vector `test` here.
+test <- c(TRUE)
+
+# celsius_to_kelvin() function: 
+
+celsius_to_kelvin <- function(celsius) {
+  stopifnot(is.numeric(celsius))
+  kelvin <- celsius + 273.15
+  return(kelvin)
+}
+
+# Input `test` into the celsius_to_kelvin() function. 
+
+celsius_to_kelvin(test)
+
+```
+
+
+```{r verifyfunction2-check}
+grade_code()
 ```
 
 ## List-Columns and Map Functions
 
-```{r, quiz-5}
+```{r, quiz-7}
 
 quiz(
   question("Which of the following is true about list-columns?",
@@ -527,6 +722,9 @@ quiz(
     )
 )
 
-
 ```
+
+
+
+
 
