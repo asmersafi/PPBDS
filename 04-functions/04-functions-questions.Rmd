@@ -1,0 +1,53 @@
+---
+title: "04-functions-questions"
+author: "Asmer Asrar Safi"
+date: "6/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(PPBDS.data)
+```
+
+
+
+```{r}
+
+# Eduting dataset to remove irrelevant variables
+
+qscores1 <- qscores %>% 
+  select(-term, -prof_name, -course_number) 
+
+# Creating a dataset for major courses only, by filtering
+# for courses in the government department only. 
+
+gov <- qscores1 %>% 
+  filter(department == "GOV") %>% 
+  head(13)
+
+# Randomly sampling 19 courses from the qscores1 dataset.
+# 19 + 13 is equal to 32. 
+
+qscores2 <- qscores1 %>% 
+  sample_n(19)
+
+
+joinedgovqs2 <- gov %>% 
+  full_join(qscores2, by = c('department', 
+                             'enrollment', 
+                             'workload',
+                             'overall',
+                             'course_name'))
+
+joinedgovqs2
+
+```
+
+```{r}
+
+glimpse(joinedgovqs2)
+
+```
