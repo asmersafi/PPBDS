@@ -14,7 +14,7 @@ library(PPBDS.data)
 
 
 
-```{r}
+```{r, prepping data}
 
 # Eduting dataset to remove irrelevant variables
 
@@ -34,6 +34,9 @@ gov <- qscores1 %>%
 qscores2 <- qscores1 %>% 
   sample_n(19)
 
+# join the qscores2 (the other 19 courses she takes) and 
+# the GOV major courses she takes by other variables, to form 
+# a dataset of 32 courses
 
 joinedgovqs2 <- gov %>% 
   full_join(qscores2, by = c('department', 
@@ -42,12 +45,46 @@ joinedgovqs2 <- gov %>%
                              'overall',
                              'course_name'))
 
-joinedgovqs2
+# More variations can be added, to accommodate for GENEDs,
+# secondaries etc too. 
 
+```
+
+
+
+
+```{r, major}
+
+# For major 
+
+get_gov <- function(x) {
+  grepl("GOV", x)
+  
+}
+joinedgovqs2 <- joinedgovqs2 %>% 
+  tibble(course_detail = map_chr(department, ~ if_else(get_gov(.), "Concentration", "Other")))
+
+```
+
+
+
+```{r, reordering data randomly}
+
+# reordering data
+
+joinedgovqs3 <- sample_n(joinedgovqs2, 32)
+
+joinedgovqs3
 ```
 
 ```{r}
 
-glimpse(joinedgovqs2)
+
+
+
 
 ```
+
+
+
+
