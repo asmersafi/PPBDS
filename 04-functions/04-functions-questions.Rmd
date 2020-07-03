@@ -89,7 +89,7 @@ j <- sample_n(joinedgovqs2, 32)
 
 numbered <- function(x){
   x %>% 
-  mutate(year_no = rep(1:4, 8))
+  mutate(year_no = rep(1:8, 4))
   
 }
 
@@ -109,7 +109,7 @@ j <- j %>%
   mutate(total_hrs = sum(workload))
 
 # Create a function that uses this sum to calculate the workload percentage
-# for each class, in a year. 
+# for each class, in a semester 
 
 
 j <- j %>%
