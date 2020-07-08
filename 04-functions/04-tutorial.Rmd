@@ -10,6 +10,7 @@ library(tidyverse)
 library(gradethis)
 library(learnr)
 library(purrr)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE, exercise.checker = grade_learnr)
 ```
 
