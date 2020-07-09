@@ -8,6 +8,7 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(gradethis)
+library(PPBDS.data)
 library(learnr)
 library(purrr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
@@ -1653,7 +1654,7 @@ Congratulations! This brings the tutorial to an end. You have mastered functions
 
 ##  Questions on built-in functions and using them with list columns and map functions
 
-Let's now introduce you to a series of questions that help you get the hang of using list columns and `map_*()` functions in conjunction with built-in R functions. 
+1) Let's now introduce you to a series of questions that help you get the hang of using list columns and `map_*()` functions in conjunction with built-in R functions. 
 
 Create a tibble called `firstib`. Within the tibble, create a list column called `new_col` with values `345:500` and `693:1200`. 
 
@@ -1799,5 +1800,94 @@ grade_code()
 
 ```
 
+
+3) Let's now turn our attention towards the `qscores` data from the `PPBDS.data` package. This data set contains course evaluation data on all courses taught at Harvard in the last two years. The data to be used has already been prepared for you. View it below by running `qscores`. 
+
+```{r, echo = FALSE}
+
+qscores1 <- PPBDS.data::qscores%>% 
+  select(course_name, department, workload, overall) %>% 
+  sample_n(100) %>% 
+  group_by(department) %>% 
+  nest() 
+
+
+```
+
+```{r, C0, echo=TRUE, exercise = TRUE}
+
+qscores1
+
+```
+
+Note that the data has been grouped by department, with all other information nested together, much like in the form of a list column. We will now use `map_dbl()` to calculate the `mean()` of each of the department's overall scores. We do this by wrapping `(data$overall)` in the `mean()` function. 
+
+In the following exercise, create a new column called `mean_overall` for this purpose. 
+
+```{r, C1, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+qscores1 %>% 
+  mutate(---- = --------------------)
+
+```
+
+```{r C1-hint-1}
+"Wrap `(.$overall)` in the `mean()` function to create the `mean_overall` column variable."
+```
+
+```{r, C1-solution}
+
+
+qscores1 %>% 
+  mutate(mean_overall = map_dbl(data, ~ mean(.$overall))) 
+
+
+```
+
+```{r C1-check}
+
+grade_code()
+
+```
+
+This exercise allowed us to use a `map_*()` function to get access to a particular column of the data frames stored in the data list, after it had been nested. Additionally, it allowed us to perform operations on that column, and use it to create a new one altogether - one that successfully computed the mean of `overall` scores for each departments' courses. 
+
+4) I now want to round the overall mean scores to the nearest whole number. Once more, create a column called `rounded_means` that utilizes the `map_dbl()` function in conjunction with the `round()` function for this particular purpose. The data has been prepared for you. 
+
+
+```{r, echo = FALSE}
+qscores1 <- qscores1 %>% 
+  mutate(mean_overall = map_dbl(data, ~ mean(.$overall))) 
+
+```
+
+
+```{r, C2, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+# Round the values of the overall means to the nearest whole
+# number. 
+
+qscores1 %>% 
+  mutate(rounded_means = ----------------------)
+
+```
+
+```{r C2-hint-1}
+"Wrap the `round` function in the `map_dbl()` function to create the `rounded_means` column."
+```
+
+```{r, C2-solution}
+
+qscores1 %>% 
+  mutate(mean_overall = map_dbl(mean_overall, round)) 
+
+
+```
+
+```{r C2-check}
+
+grade_code("Good job!")
+
+```
 
 
