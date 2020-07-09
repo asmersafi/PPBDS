@@ -1329,7 +1329,7 @@ quiz(
 ```
 
 
-##  List columns and `map_*` functions
+##  List columns and `map_*()` functions
 
 
 ```{r, quiz-13}
@@ -1346,11 +1346,11 @@ quiz(
   
   
   question("Which of the following map functions is not using an anonymous function? ",
-             answer("mutate(new = map_dbl(start, increment()))",
+             answer("`mutate(new = map_dbl(start, increment()))`",
                     correct = TRUE),
-             answer("mutate(new = map_dbl(start, function(x) x + 1))"),
-             answer("mutate(new = map_dbl(start, ~ . + 1))"),
-             answer("mutate(new = map_dbl(start, ~ (. + 1)))"),
+             answer("`mutate(new = map_dbl(start, function(x) x + 1))`"),
+             answer("`mutate(new = map_dbl(start, ~ . + 1))`"),
+             answer("`mutate(new = map_dbl(start, ~ (. + 1)))`"),
              allow_retry = TRUE), 
   
    question("What is true about an atomic vector? Check all that apply.",
@@ -1497,7 +1497,7 @@ grade_code(correct = "Amazing!")
 
 You have successfully used the `map_dbl()` function for converting minutes to seconds for the racer's four laps. An alternative way to write an anonymous function for the same purpose would be by using the `purrr` package (from where we get `map_dbl()`). This second way uses the ~ operator and then uses . to represent the current element.
 
-For example, instead of using `map_dbl(mins, function(x) x * 60))`, we could have used `map_dbl(mins, ~ (. * 60)). 
+For example, instead of using `map_dbl(mins, function(x) x * 60))`, we could have used `map_dbl(mins, ~ (. * 60))`. 
 
 Try this in the section below. You should obtain the same results. 
 
@@ -1650,3 +1650,154 @@ grade_code("Great, you've calculated the percentage of population above the pove
 ```
 
 Congratulations! This brings the tutorial to an end. You have mastered functions. 
+
+##  Questions on built-in functions and using them with list columns and map functions
+
+Let's now introduce you to a series of questions that help you get the hang of using list columns and `map_*()` functions in conjunction with built-in R functions. 
+
+Create a tibble called `firstib`. Within the tibble, create a list column called `new_col` with values `345:500` and `693:1200`. 
+
+```{r, A1, exercise = TRUE, echo=TRUE, eval=TRUE}
+
+firstib <- tibble(---- = -----------------) 
+
+```
+
+```{r A1-hint-1}
+"Use `new_col = list(345:500, 693:1200)` to create the list column"
+```
+
+```{r, A1-solution}
+
+firstib <- tibble(new_col = list(345:500, 693:1200)) 
+```
+
+```{r A1-check}
+
+grade_code("Great!")
+
+```
+
+Now, create a `mean_col` that uses `map_dbl()` to calculate the mean of the two elements of the list column. Type `firstib` to view the contents of the tibble. 
+
+```{r, A2, exercise = TRUE, echo=TRUE, eval=TRUE}
+
+firstib <- tibble(new_col = list(345:500, 693:1200)) %>% 
+  mutate(mean_col = --------------))
+  
+------
+
+```
+
+```{r A2-hint-1}
+"Use `(new_col, mean)` within `map_dbl()`  to create the mean column"
+```
+
+```{r, A2-solution}
+
+firstib <- tibble(new_col = list(345:500, 693:1200)) %>% 
+   mutate(mean_col = map_dbl(new_col, mean))
+
+firstib 
+
+```
+
+```{r A2-check}
+
+grade_code("Great work!")
+
+```
+
+Let's now use `map_dbl()` to map the maximum values of these two vector elements as a new column, `max_col` within the tibble. We'll be using the `max()` function for this purpose. The tibble has been created for you, for the purposes of this exercise. 
+
+
+```{r, echo=FALSE}
+
+firstib <- tibble(new_col = list(345:500, 693:1200)) %>% 
+   mutate(mean_col = map_dbl(new_col, mean))
+
+```
+
+```{r, A3, exercise=TRUE, eval = TRUE, echo = TRUE}
+
+firstib %>% 
+  mutate(---- = ------------------)
+
+```
+
+```{r A3-hint-1}
+"Use `(new_col, max)` within `map_dbl()`  to create the `max_col` column"
+```
+
+```{r, A3-solution}
+
+firstib %>% 
+  mutate(max_col = map_dbl(new_col, max))
+
+
+```
+
+```{r A3-check}
+
+grade_code("Great work! You're getting the hang of this!")
+
+```
+
+2) Let's now use another tibble that we've created for you, called `sectib`. View it in the space below by running the code `sectib`, followed by `str()` to view its contents.  
+
+```{r}
+
+sectib <- tibble(list_col = list(c(1, 5, 7), 
+                       5, 
+                       c(10, 10, 11)))
+
+```
+
+```{r, B1, echo = TRUE, exercise = TRUE}
+
+
+# Use `str()` with `sectib` to view the tibble. 
+
+sectib %>% 
+  ---()
+
+```
+
+Now use the `sum()` function to create the column `list_sum`. This column uses the `map_dbl()` on the `list_col` column. 
+
+Then use `pull()` on `list_sum` to obtain the values of the `list_sum` column. 
+
+
+```{r, B2, exercise=TRUE, eval = TRUE, echo = TRUE}
+
+sectib %>% 
+  mutate(----------------------------) %>% 
+  pull(-----)
+
+```
+
+```{r B2-hint-1}
+"Use `mutate()` to create the `list_sum` column."
+```
+
+```{r B2-hint-2}
+"Use `(list_col, sum)` within `map_dbl()`  to create the `list_sum` column"
+```
+
+```{r, B2-solution}
+
+sectib %>% 
+  mutate(list_sum = map(list_col, sum)) %>% 
+  pull(list_sum)
+
+
+```
+
+```{r B2-check}
+
+grade_code()
+
+```
+
+
+
