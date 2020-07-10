@@ -1652,7 +1652,7 @@ grade_code("Great, you've calculated the percentage of population above the pove
 
 Congratulations! This brings the tutorial to an end. You have mastered functions. 
 
-##  Questions on built-in functions and using them with list columns and map functions
+##  Using built in functions with list columbs and `map_*()` functions. 
 
 1) Let's now introduce you to a series of questions that help you get the hang of using list columns and `map_*()` functions in conjunction with built-in R functions. 
 
