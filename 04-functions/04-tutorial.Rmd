@@ -1243,11 +1243,11 @@ quiz(
     ),
   
   question("Which of the following map functions is not using an anonymous function? ",
-             answer("mutate(new = map_dbl(start, increment()))",
+             answer("`mutate(new = map_dbl(start, increment()))`",
                     correct = TRUE),
-             answer("mutate(new = map_dbl(start, function(x) x + 1))"),
-             answer("mutate(new = map_dbl(start, ~ . + 1))"),
-             answer("mutate(new = map_dbl(start, ~ (. + 1)))"),
+             answer("`mutate`(new = map_dbl(start, function(x) x + 1))`"),
+             answer("`mutate(new = map_dbl(start, ~ . + 1))`"),
+             answer("`mutate(new = map_dbl(start, ~ (. + 1)))`"),
              allow_retry = TRUE
     ),
   
@@ -1879,7 +1879,7 @@ qscores1 %>%
 ```{r, C2-solution}
 
 qscores1 %>% 
-  mutate(mean_overall = map_dbl(mean_overall, round)) 
+  mutate(rounded_means = map_dbl(mean_overall, round)) 
 
 
 ```
@@ -1887,6 +1887,121 @@ qscores1 %>%
 ```{r C2-check}
 
 grade_code("Good job!")
+
+```
+
+
+5) Let's now turn towards using `map_lgl()`. We want to use `map_lgl()` to create a condition that reports `TRUE` if the `mean_overall` score for each department is greater than 4. We will name this logical column `gthan4`. 
+
+Use the condition `mean_overall > 4` within a `map_lgl()` function to compute the output column `gthan4`. 
+
+
+```{r, setup2, echo = FALSE, eval = FALSE}
+qscores1
+```
+
+
+```{r, C3, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+# Round the values of the overall means to the nearest whole
+# number. 
+
+qscores1 %>% 
+  mutate(gthan4 = ----------------------)
+
+```
+
+```{r C3-hint-1}
+"Use `~ mean_overall > 4` to create the relevant condition. Note that you're using an anonymous function for this process!"
+```
+
+```{r, C3-solution}
+
+qscores1 %>% 
+  mutate(gthan4 = map_lgl(mean_overall, ~ mean_overall > 4)) 
+
+
+```
+
+```{r C3-check}
+
+grade_code("Good job!")
+
+```
+
+Notice that you could have also used `~ . mean_overall > 4` for the same outcome. Try it in the section above, and run your answer to see the results you obtain!
+
+6) Now, lets replace `map_lgl()` with `map_dbl()`, maintaining the same condition. What do we expect to see? 
+
+```{r, setup3, echo = FALSE, eval = FALSE}
+
+qscores1
+
+```
+
+```{r, C4, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+qscores1 %>% 
+  mutate(gthan4 = -----(mean_overall, ~ mean_overall > 4)) 
+
+```
+
+```{r C4-hint-1}
+"Use `~ mean_overall > 4` to create the relevant condition. Note that you're using an anonymous function for this process!"
+```
+
+```{r, C4-solution}
+
+qscores1 %>% 
+  mutate(gthan4 = map_dbl(mean_overall, ~ mean_overall > 4)) 
+
+
+```
+
+```{r C4-check}
+
+grade_code("Correct! Instead of giving you a response in `TRUE` and `FALSE`, we now compute logical values in the form of 1s and 0s, given that we're still mapping results using a condition.")
+
+```
+
+7) What if we wanted to use `map_chr()` to use the same condition, but give us different character outputs? Let's say we want the `gthan4` column to report `I don't like this dept.` for every department  that has an overall mean q score rating of below 4, and `I love this dept` for every department with an overall mean q score rating of above 4. 
+
+We will employ `if_else()` for this purpose.
+
+
+```{r, setup4, echo = FALSE, eval = FALSE}
+
+qscores1 
+
+```
+
+```{r, C5, exercise = TRUE, eval = TRUE, echo = TRUE}
+
+qscores1 %>% 
+  mutate(gthan4 = -----(mean_overall, ~ --------------------------------------------)) 
+
+```
+
+```{r C5-hint-1}
+"You might want to look up documentation for `if_else()` for this question. To make life easier for you, use the condition `(mean_overall > 4)` within an `if_else()`, followed by the character outputs we want separated by commas."
+```
+
+```{r C5-hint-2}
+"Use this within a `map_chr()`: `if_else((mean_overall > 4), 'I love this dept.', 'I don't like this dept.')`"
+```
+
+
+```{r, C5-solution}
+
+qscores1 %>% 
+  mutate(gthan4 = map_chr(mean_overall, ~ if_else((mean_overall > 4), 'I love this dept.', 'I don't like this dept.')))
+
+
+```
+
+```{r C5-check}
+
+grade_code("Great.")
 
 ```
 
