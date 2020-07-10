@@ -1964,7 +1964,7 @@ grade_code("Correct! Instead of giving you a response in `TRUE` and `FALSE`, we 
 
 ```
 
-7) What if we wanted to use `map_chr()` to use the same condition, but give us different character outputs? Let's say we want the `gthan4` column to report `I don't like this dept.` for every department  that has an overall mean q score rating of below 4, and `I love this dept` for every department with an overall mean q score rating of above 4. 
+7) What if we wanted to use `map_chr()` to use the same condition, but give us different character outputs? Let's say we want the `gthan4` column to report `I do not like this dept.` for every department  that has an overall mean q score rating of below 4, and `I love this dept` for every department with an overall mean q score rating of above 4. 
 
 We will employ `if_else()` for this purpose.
 
@@ -1987,14 +1987,14 @@ qscores1 %>%
 ```
 
 ```{r C5-hint-2}
-"Use this within a `map_chr()`: `if_else((mean_overall > 4), 'I love this dept.', 'I don't like this dept.')`"
+"Use this within a `map_chr()`: `if_else((mean_overall > 4), 'I love this dept.', 'I do not like this dept.')`"
 ```
 
 
 ```{r, C5-solution}
 
 qscores1 %>% 
-  mutate(gthan4 = map_chr(mean_overall, ~ if_else((mean_overall > 4), 'I love this dept.', 'I don't like this dept.')))
+  mutate(gthan4 = map_chr(mean_overall, ~ if_else((mean_overall > 4), 'I love this dept.', 'I do not like this dept.')))
 
 
 ```
@@ -2004,5 +2004,166 @@ qscores1 %>%
 grade_code("Great.")
 
 ```
+
+8) Next, let's turn our attention towards the `trains` dataset from the `PPBDS.data` package. The data set carries information regarding the preferences and characteristics of each voter involved in the survey. 
+
+First, lets `group_by()` by the genders mentioned in the survey, and then proceed to calculate the median income for each gender. 
+
+```{r, D1, eval = TRUE, echo = TRUE, exercise = TRUE}
+
+x <- trains %>%
+  
+  # Use `group_by() on the gender variable`
+  
+  group_by(-----) %>% 
+  
+  # `nest()` the data. 
+  
+  ---()
+
+# View the tibble x. 
+
+x
+
+```
+
+
+```{r, D1-solution}
+
+
+x <- trains %>%
+  
+  # Use `group_by() on the gender variable`
+  
+  group_by(gender) %>% 
+  
+  # `nest()` the data. 
+  
+  nest()
+
+# View the tibble x. 
+
+x
+
+
+```
+
+```{r D1-check}
+
+grade_code()
+
+```
+
+9) Now, let's once more use `map_dbl` to calculate the mean of the `income` variable for each gender. Call this column the `mean_income` column. 
+
+```{r, setup5, eval = FALSE, echo = FALSE}
+x
+```
+
+```{r, D2, eval=TRUE, echo=TRUE, exercise = TRUE}
+
+x %>% 
+  mutate(mean_income = ------------------------)
+
+```
+
+```{r D2-hint-1}
+
+"Use `~ mean(.$income)` inside the `map_dbl()` function, taking values from the `data` tibble."
+
+```
+
+```{r D2-solution}
+
+x %>% 
+  mutate(mean_income = map_dbl(data, ~ mean(.$income)))
+
+```
+
+
+```{r D2-check}
+
+grade_code("Amazing!")
+
+```
+
+9) Let's now employ anonymous functions to convert the mean incomes for the two groups from USD to Pound sterling. The conversion is as follows: $1 USD = £0.79 Pound Sterling.  
+
+The data from the previous question has been prepared for you. Name the new column `pound`, and use the following anonymous function `. * 0.79` following a tilda (`~`). 
+
+```{r, setup5_5, echo = FALSE, eval = FALSE}
+
+x 
+
+```
+
+Use `map_dbl()` for this purpose.
+
+```{r, D2_5, exercise = TRUE, echo = FALSE, eval = TRUE}
+
+x %>% 
+  mutate(mean_income = map_dbl(data, ~ mean(.$income))) %>% 
+  mutate(pound = --------------------------------------)
+
+```
+
+
+```{r D2_5-solution}
+
+x %>% 
+  mutate(mean_income = map_dbl(data, ~ mean(.$income))) %>% 
+  mutate(pound = map_dbl(mean_income, ~ . * 0.79))
+
+```
+
+```{r D2_5-check}
+
+grade_code()
+
+```
+
+10) Let's now use the same dataset for the purposes of calculating the range of ages for groups that identify as `Democrats` or `Republicans`. We have grouped and nested the data for you.
+
+```{r, setup6, echo = FALSE, eval=FALSE}
+
+trains <- PPBDS.data::trains %>% 
+  group_by(party) %>% 
+  nest()
+
+```
+
+Use the the anonymous function `(max() - min())` along with `map_dbl()` to construct the column `range_ages`. 
+
+```{r, D3, exercise = TRUE, eval=TRUE, echo=TRUE}
+
+trains %>% 
+  mutate(range_ages = -------------------------)
+
+```
+
+```{r, D3-hint}
+
+"(max(.$age) - min(.$age)) - wrap the `map_dbl() function around this anonymous function to compute the range. Obtain values from the `data` tibble."
+```
+
+
+```{r, D3-solution}
+
+# Use `(.$age)` inside the `max()` and `min()` function calculate the range of the ages
+# for groups identifying with either party.
+
+trains %>% 
+  mutate(range_ages = map_dbl(data, ~ (max(.$age) - min(.$age))))
+
+```
+
+```{r, D3-check}
+
+grade_code()
+
+```
+
+
+
 
 
