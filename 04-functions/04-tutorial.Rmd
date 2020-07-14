@@ -1553,7 +1553,7 @@ grade_code()
 
 Now that we have set the y argument to a default value, we do not need to specify the value of the y argument every time we run the function.
 
-## Control Flow
+## Control Flow (From RPrimer 4)
 
 ### `if` and `else`
 
@@ -1735,14 +1735,14 @@ x <- "."
 ```
 
 ```{r clean2-solution}
-clean <- function(x) {
+clean2 <- function(x) {
   if (x == ".") NA 
-  else 'x'
+  else x
 }
 ```
 
 ```{r clean2-check}
-"What if you'd like to check for both -99 and . in the same function?"
+grade_code("What if you'd like to check for both -99 and . in the same function?")
 ```
 
 ### else if
@@ -1793,10 +1793,11 @@ x <- ""
 ```
 
 
-```{r clean3, exercise = TRUE}
+```{r clean3, exercise = TRUE, eval = TRUE}
+
 ```
 
-```{r clean3-solution}
+```{r clean3-solution, echo = FALSE}
 clean <- function(x) {
   if (x == -99) NA 
   else if (x == ".") NA
@@ -1807,12 +1808,12 @@ clean <- function(x) {
 ```
 
 ```{r clean3-check}
-"You can add as many else if's after if as you like. However, you cannot add an else if clause after an else because R will interpret the else as the end of a complete if else statement."
+grade_code("You can add as many else if's after if as you like. However, you cannot add an else if clause after an else because R will interpret the else as the end of a complete if else statement.")
 ```
 
 ### Quiz
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = TRUE}
 foo <- function(x) {
   if (x > 2) "a"
   else if (x < 2) "b"
@@ -1822,7 +1823,7 @@ foo <- function(x) {
 foo(1)
 ```
 
-```{r else-if-quiz, echo = FALSE}
+```{r else-if-quiz}
 question("What will this code return?",
          answer('"a"', message = "R will not retunr a because the condition 1 > 2 is false."),
          answer('"b"', correct = TRUE, message = 'The condition 1 < 2 is true, so R will evaluate the code that follows it (i.e. "b") and then skip the remainder of the multi-part if statement.'),
@@ -1832,7 +1833,7 @@ question("What will this code return?",
 
 ### Quiz
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = TRUE}
 clean <- function(x) {
   if (x == -99) NA 
   if (x == ".") NA
@@ -1842,18 +1843,18 @@ clean <- function(x) {
 clean(-99)
 ```
 
-```{r clean3-quiz, echo = FALSE}
-question("What will this code return?",
+```{r clean3-quiz}
+quiz(question("What will this code return?",
          answer("NA", message = "Did you notice that the `if` statements are not linked by `else`? What difference does this make?"),
          answer("-99", correct = TRUE, message = "Since the `if` clauses are not linked by `else`, R treats them as separate statements. R checks each if statement. After the first statement it runs NA, but does not return this as the result of the function (because this is not the final statement in the function). R does not run NA for the next two if statements because their conditions are false. Then R reaches `x`, which is the last line and last statement in the function. R evaluates `x`, which equals -99, and returns -99 as the result of the function."),
-         allow_retry = TRUE)
+         allow_retry = TRUE))
 ```
 
 ### Congratulations!
 
 You now know how to use `if` and `else` in your code. Let's look at another way to control flow in R.
 
-### return() and stop()
+### `return()` and `stop()`
 
 ###  
 
@@ -2054,7 +2055,7 @@ Think you have it?
 
 * Try replacing the `if` + `stop()` statement in `clean()` with `stopifnot()`. Then click Submit Answer.
 
-```{r stopifnot, exercise = TRUE}
+```{r stopifnot, exercise = TRUE, eval = TRUE}
 clean <- function(x) {
   if (is.null(x)) stop("x is NULL")
   if (x == -99) return(NA)
@@ -2079,14 +2080,14 @@ clean <- function(x) {
 ```
 
 ```{r stopifnot-check}
-"stopifnot() is both very readable and very useful. Click Continue to see why."
+grade_code("`stopifnot()` is both very readable and very useful. Click Continue to see why.")
 ```
 
-### Defensive programming with stopifnot()
+### Defensive programming with `stopifnot()`
 
 You can save yourself debugging time by writing your functions to _fail fast_ with clear error messages. To do this, think about situations that will lead to errors and then check for them with `stopifnot()` at the beginning of your code.
 
-```{r}
+```{r, echo = TRUE}
 clean <- function(x) {
   stopifnot(!is.null(x), is.numeric(x), length(x) == 1)
   
