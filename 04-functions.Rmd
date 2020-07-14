@@ -9,6 +9,8 @@ output_yaml:
 
 <!-- 0. Add all of the Primer to the tutorial. Add lots more list-column and map functions, both at the start and at end.  Add 30 list-column and mapping questions, generally with with each set of questions grouped into a mini two or three question series. E-mail me. -->
 
+<!-- AS: Added all the Primer to the tutorial. Took longer than I thought it would... but it seems to work and is fairly long. -->
+
 <!-- 1. Make clear the mapping from chapter sections to tutorial panels. With numbering. Also fix the easily fixable from style.Rmd. -->
 
 <!-- 3. Read the probability chapter in bok. Maybe the running examples here should all be stuff from dice, coins and so on, setting the stage for chapter 5. Or maybe those are the questions we should ask in the tutorial? -->
