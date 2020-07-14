@@ -236,7 +236,7 @@ There is one last thing you should know about functions: functions are like Las 
 > What happens in a function stays in the function.
 For example, suppose I've saved values as `x` and `y`. 
 
-```{r}
+```{r tryout-setup}
 x <- 1
 y <- FALSE
 ```
@@ -245,7 +245,7 @@ y <- FALSE
 
 Calling `xor` will not change those values, even though I'm defining new values for `x` and `y` in the function.
 
-```{r}
+```{r tryout, exercise = TRUE}
 xor(x = TRUE, y = TRUE)
 x
 y
@@ -269,8 +269,8 @@ So don't worry about using functions. (Ahem, technically you _could_ write a fun
 
 ```{r ex1, echo = FALSE}
 question("Which of these will run the `Sys.time` function?",
-         answer("Sys.time"),
-         answer("Sys.time()", correct = TRUE, 
+         answer("`Sys.time`"),
+         answer("`Sys.time()`", correct = TRUE, 
          message = "The open and closed parentheses tell R to execute the code in the code body of the function stored in the object names Sys.time."))
 ```
 
@@ -278,22 +278,25 @@ question("Which of these will run the `Sys.time` function?",
 
 * Find the code body of `foo`
 
-```{r foo, exercise = TRUE}
-```
 
-```{r foo-setup}
+```{r foo-setup, echo = FALSE, eval = TRUE}
 foo <- function() {
   a <- 10
   a
 }
 ```
 
-```{r foo-solution}
+```{r foo, exercise = TRUE}
+
+```
+
+
+```{r foo-solution, echo = FALSE}
 body(foo)
 ```
 
 ```{r foo-check}
-""
+grade_code("Good!")
 ```
 
 #### Exercise 3
@@ -307,13 +310,13 @@ foo <- function() {
 }
 ```
 
-```{r}
-body(foo)
+```{r, echo = TRUE}
+body(foo) 
 ```
 
 What will be the final value of `a` if I run the following three lines of code in order?
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo=TRUE}
 a <- 1
 foo()
 a
@@ -321,7 +324,7 @@ a
 
 ```{r ex3, echo = FALSE}
 question("",
-         answer("1", correct = TRUE, message = "What happens in a function, stays in the function. foo() will not change the value of a outside of foo()."),
+         answer("1", correct = TRUE, message = "What happens in a function, stays in the function. `foo()` will not change the value of a outside of `foo()`."),
          answer("10"),
          answer("Running a will return an error."),
          allow_retry = TRUE)
@@ -334,12 +337,12 @@ You have finished the tutorial.
 
 *Let's start off by recapping what we learnt at the beginning of our section on writing functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
 
-```
+
 
 
 ## Building your first function 
 
-*Let's start off by recapping what we learnt at the beginning of the chapter on Functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
+* Let's start off by recapping what we learnt at the beginning of the chapter on Functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
 
 
 ```{r quiz-1}
@@ -1664,8 +1667,7 @@ quiz(
              answer("Lists and list columns are synonyms."),
              answer("List columns can only contain values as elements in the list."),
              answer("All of the above."),
-             allow_retry = TRUE
-    ),
+             allow_retry = TRUE),
   
   
   question("Which of the following map functions is not using an anonymous function? ",
@@ -1689,17 +1691,17 @@ quiz(
              answer("Create a tibble with one variable and two observations"),
              answer("Create a tibble with one variable and one observation.", correct = TRUE),
              answer("Produce a list with three elements", correct = TRUE),
-             allow_retry = TRUE, 
+             allow_retry = TRUE,
             type = "multiple"),
-  
+
      question("Which of the following is true about list columns? Check all that apply.",
              answer("We use `str_split()` to remove list columns."),
              answer("We use `mutate()` to create list columns.", correct = TRUE),
              answer("Each element of a list can only have one kind of data type."),
              answer("Each element of a list can only have multiple data types.", correct = TRUE),
-             allow_retry = TRUE, 
+             allow_retry = TRUE,
              type = "multiple")
-  
+
 )
 
 ```
