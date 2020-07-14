@@ -14,6 +14,7 @@ library(purrr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE, exercise.checker = grade_learnr)
 options(tutorial.storage="client") 
+
 ```
 
 
@@ -338,11 +339,12 @@ You have finished the tutorial.
 *Let's start off by recapping what we learnt at the beginning of our section on writing functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
 
 
-
-
 ## Building your first function 
 
 * Let's start off by recapping what we learnt at the beginning of the chapter on Functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
+
+
+*Let's start off by recapping what we learnt at the beginning of the chapter on Functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
 
 
 ```{r quiz-1}
@@ -2123,4 +2125,5 @@ sectib %>%
 grade_code()
 
 ```
+
 
