@@ -14,6 +14,7 @@ library(purrr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE, exercise.checker = grade_learnr)
 options(tutorial.storage="client") 
+
 # checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
 #   list(message = check_code, correct = TRUE, location = "append")
 # }
@@ -338,6 +339,14 @@ You have finished the tutorial.
 
 
 *Let's start off by recapping what we learnt at the beginning of our section on writing functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
+=======
+```
+
+
+## Building your first function 
+
+*Let's start off by recapping what we learnt at the beginning of the chapter on Functions. Recall that we used a variety of different ways to calculate the same output - the range of a numeric variable*
+>>>>>>> master
 
 ```{r quiz-1}
 
@@ -1564,6 +1573,7 @@ quiz(
              answer("`mutate(new = map_dbl(start, increment()))`",
                     correct = TRUE),
              answer("`mutate(new = map_dbl(start, function(x) x + 1))`"),
+             answer("`mutate`(new = map_dbl(start, function(x) x + 1))`"),
              answer("`mutate(new = map_dbl(start, ~ . + 1))`"),
              answer("`mutate(new = map_dbl(start, ~ (. + 1)))`"),
              allow_retry = TRUE
@@ -2124,7 +2134,8 @@ grade_code()
 ```{r, echo = FALSE}
 
 qscores1 <- PPBDS.data::qscores%>% 
-  select(course_name, department, workload, overall) %>% 
+
+  select(course_name, department, hours, rating) %>% 
   sample_n(100) %>% 
   group_by(department) %>% 
   nest() 
